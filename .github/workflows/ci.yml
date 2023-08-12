@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements_dev.txt
 
       - name: Pylint
-        run: pylint
+        run: pylint --recursive=y .
 
   rspec:
     name: Pytest

@@ -1,6 +1,7 @@
 # Block any external connection in tests
-import socket, pytest
+import socket
 from ipaddress import ip_address
+import pytest
 
 _original_connect = socket.socket.connect
 
@@ -15,15 +16,16 @@ def patched_connect(*args, **kwargs):
 
     if isinstance(address, str):
         # AF_UNIX
-        ip = address
+        user_ip = address
     elif len(address) == 2:
         # AF_INET
-        ip, port = address
+        user_ip, _port = address
     else:
         # AF_INET6
-        ip, port, _, _ = address
+        user_ip, _port, _, _ = address
 
-    if ip_address(ip).is_private:
+    if ip_address(user_ip).is_private:
         return _original_connect(*args, **kwargs)
 
     pytest.fail("Public network request detected")
+    return None

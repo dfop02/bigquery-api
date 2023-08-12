@@ -1,4 +1,5 @@
-import pytest, sys, json
+import sys
+import json
 from unittest.mock import patch
 from os.path import dirname
 sys.path.append(dirname(dirname(__file__)))
@@ -36,8 +37,6 @@ def test_valid_json_format():
     with patch('google.cloud.bigquery.client.Client.query') as mock_get:
         mock_get.return_value = bq_query_response
         response = app.test_client().post('/api/v1/bigquery', json=data, headers=headers)
-
-    res = json.loads(response.data.decode('utf-8')).get('result')
 
     assert response.content_type == 'application/json'
     assert response.status_code == 200
