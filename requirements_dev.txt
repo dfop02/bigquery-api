@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest==7.4.0
+pytest-dotenv==0.5.2
+pylint==2.17.5
